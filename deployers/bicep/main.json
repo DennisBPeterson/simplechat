@@ -229,7 +229,11 @@
       "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c",
       "storageBlobDataContributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
       "acrPull": "7f951dda-4ed3-4680-a7ca-43fe172d538d"
-    }
+    },
+    "cosmosScope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName'))]",
+    "uamiId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]",
+    // The GUID below is the built-in *Contributor* role definition ID
+    "contributorRoleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },
   "resources": [
     {
@@ -549,10 +553,10 @@
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
       "scope": "[format('Microsoft.DocumentDB/databaseAccounts/{0}', variables('cosmosDbName'))]",
-      "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName')), resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName')), variables('roles').contributor)]",
+      "name": "[guid(variables('cosmosScope'), variables('contributorRoleDefinitionId'), reference(variables('uamiId'), '2018-11-30').principalId)]",
       "properties": {
-        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('roles').contributor)]",
-        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName')), '2023-01-31').principalId]",
+        "roleDefinitionId": "[variables('contributorRoleDefinitionId')]",
+        "principalId": "[reference(variables('uamiId'), '2018-11-30').principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
