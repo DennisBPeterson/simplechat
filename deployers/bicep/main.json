@@ -232,7 +232,6 @@
     },
     "cosmosScope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName'))]",
     "uamiId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]",
-    // The GUID below is the built-in *Contributor* role definition ID
     "contributorRoleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },
   "resources": [
